@@ -38,25 +38,17 @@ do {
 
   if (userPassword === null) {
     alert ('Cansel input');
-  } else if (attempts === 0) {
-    alert ('Attempts are end. Account is blocked');
-  } else {
-    for (let i = 0; i < arrLength; i += 1) {
-      if (userPassword === passwords[i]) {
+  } else if (passwords.includes(userPassword)) {
         alert('Hello');
-          passwordIsOk = true;
-          console.log(passwordIsOk);
-          break;
-      }
-    }
-    if (passwordIsOk === false) {
-      alert (`Wrong input. Try again. You have ${attempts - 1} attempts`);
-      if (attempts === 1) {
+  } else if (!(passwords.includes(userPassword))) { 
+      if (attempts > 1) {
+        alert (`Wrong input. You have ${attempts - 1} attempts`);
+    } else if (attempts === 1) {
+        alert(`Wrong input. You have ${attempts - 1} attempts. Account is blocked`)
         break;
       }
     }
-  }
   
-} while (attempts !== 0 && userPassword !== null && passwordIsOk === false)
+} while (attempts !== 0 && userPassword !== null && !(passwords.includes(userPassword)))
 
   

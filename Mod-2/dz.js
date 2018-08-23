@@ -27,10 +27,10 @@ let total = 0;
 
 do {
   userInput = prompt('Enter a number');
-  if (Number.isNaN(Number(userInput)) === true) {
-    alert('It\'s not a numbet')
+  if (Number.isNaN(+userInput)) {
+    alert("It's not a number")
   } else {
-    numbers.push(Number(userInput))
+    numbers.push(+userInput)
   }
 } while (userInput !== null)
 console.log(numbers)
@@ -39,5 +39,8 @@ for (let i of numbers) {
   total += Number(i)
 }
 
-alert(`Общая сумма чисел равна ${total}`)
-console.log(total)
+if (numbers.length !== 1) { // костыль, наверное?
+alert(`Общая сумма чисел равна ${total}`);
+}
+// console.log(numbers.length)
+// console.log(total)
