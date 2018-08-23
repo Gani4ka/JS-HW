@@ -38,4 +38,6 @@ console.log(numbers)
 for (let i of numbers) {
   total += Number(i)
 }
+
+alert(`Общая сумма чисел равна ${total}`)
 console.log(total)
