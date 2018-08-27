@@ -31,20 +31,24 @@ let attempts = 4;
 let userPassword;
 let passwordIsOk = false;
 const arrLength = passwords.length;
+const helloMess = 'Hello';
+const canselMess = 'Cansel input';
+const wrongMess = 'Wrong input. You have attempts: ';
+const blockMess = 'Account is blocked';
 
 do {
   userPassword = prompt('Enter your password');
   attempts -= 1;
 
   if (userPassword === null) {
-    alert ('Cansel input');
+    alert (canselMess);
   } else if (passwords.includes(userPassword)) {
-        alert('Hello');
+        alert(helloMess);
   } else if (!(passwords.includes(userPassword))) { 
       if (attempts > 1) {
-        alert (`Wrong input. You have ${attempts - 1} attempts`);
+        alert (`${wrongMess} ${attempts - 1}.`);
     } else if (attempts === 1) {
-        alert(`Wrong input. You have ${attempts - 1} attempts. Account is blocked`)
+        alert(`${wrongMess} ${attempts - 1}. ${blockMess}.`)
         break;
       }
     }

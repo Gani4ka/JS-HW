@@ -39,4 +39,4 @@ for (let i of numbers) {
   total += Number(i)
 }
 
-if (numbers.length !== 0) alert(alertMess + total);
+if (numbers.length !== 0) alert(`${alertMess} ${total}`);
