@@ -24,23 +24,19 @@
 let userInput;
 const numbers = [];
 let total = 0;
+const alertMess = 'Общая сумма чисел равна: '
 
 do {
   userInput = prompt('Enter a number');
   if (Number.isNaN(+userInput)) {
     alert("It's not a number")
-  } else {
-    numbers.push(+userInput)
+  } else if (userInput !== null) {
+    numbers.push(+userInput);
   }
 } while (userInput !== null)
-console.log(numbers)
 
 for (let i of numbers) {
   total += Number(i)
 }
 
-if (numbers.length !== 1) { // костыль, наверное?
-alert(`Общая сумма чисел равна ${total}`);
-}
-// console.log(numbers.length)
-// console.log(total)
+if (numbers.length !== 0) alert(alertMess + total);
