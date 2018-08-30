@@ -46,16 +46,21 @@ const successMess = 'Логин успешно добавлен!';
 
 const isLoginValid = login => login.length >= 4 && login.length <= 16;
 
-const isLoginUnique = login => !allLogins.includes(login);
+const isLoginUnique = login => allLogins.includes(login);
   
 const addLogin = function(logins, login) {
-  if ( !isLoginValid(login) ) return alert(wrongMess);
-  else if( !isLoginUnique(login) ) return alert(noUniqMess);
-  else if ( isLoginUnique(login) ) {
-    logins.push(login);
-    console.log(logins);
-    return alert(successMess)
+  if ( !isLoginValid(login) ) {
+     alert(wrongMess);
+     return wrongMess
+  } 
+  if( isLoginUnique(login) ) {
+    alert(noUniqMess);
+    return noUniqMess
   }
+  logins.push(login);
+  console.log(logins);
+  alert( successMess );
+  return successMess;
 }
 
 // Вызовы функции для проверки
