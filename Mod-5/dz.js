@@ -101,7 +101,7 @@ const users = [
 /*
  * Получить массив имен (поле name) всех пользователей
  */
-const getAllNames = arr => arr.map(val => val.name);
+const getAllNames = users => users.map(user => user.name);
 
 console.log(getAllNames(users)); 
 // [ 'Moore Hensley', 'Sharlene Bush', 'Ross Vazquez', 'Elma Head', 'Carey Barr', 'Blackburn Dotson', 'Sheree Anthony' ]
@@ -110,7 +110,7 @@ console.log(getAllNames(users));
 /**
  * Получить массив объектов пользователей по цвету глаз (поле eyeColor)
  */
-const getUsersByEyeColor = (arr, color) => arr.filter(val => val.eyeColor === color);
+const getUsersByEyeColor = (users, color) => users.filter(user => user.eyeColor === color);
 
 console.log(getUsersByEyeColor(users, 'blue')); // [объект Moore Hensley, объект Sharlene Bush, объект Carey Barr]
 
@@ -118,7 +118,9 @@ console.log(getUsersByEyeColor(users, 'blue')); // [объект Moore Hensley, 
 /**
  * Получить массив имен пользователей по полу (поле gender)
  */
-const getUsersByGender = (arr, gender) => arr.filter(val => val.gender === gender);
+const getUsersByGender = (users, gender) => users
+.filter(user => user.gender === gender)
+.map(user => user.name)
 
 console.log(getUsersByGender(users, 'male')); // [ 'Moore Hensley', 'Ross Vazquez', 'Carey Barr', 'Blackburn Dotson' ]
 
@@ -126,7 +128,7 @@ console.log(getUsersByGender(users, 'male')); // [ 'Moore Hensley', 'Ross Vazque
 /**
  * Получить массив только неактивных пользователей (поле isActive)
  */
-const getInactiveUsers = arr => arr.filter(val => !val.isActive);
+const getInactiveUsers = users => users.filter(user => !user.isActive);
 
 console.log(getInactiveUsers(users)); // [объект Moore Hensley, объект Ross Vazquez, объект Blackburn Dotson]
                       
@@ -134,7 +136,7 @@ console.log(getInactiveUsers(users)); // [объект Moore Hensley, объек
 /**
  * Получить пользоваля (не массив) по email (поле email, он уникальный)
  */
-const getUserByEmail = (arr, email) => arr.find(val => val.email === email);
+const getUserByEmail = (users, email) => users.find(user => user.email === email);
 
 console.log(getUserByEmail(users, 'shereeanthony@kog.com')); // {объект пользователя Sheree Anthony}
 console.log(getUserByEmail(users, 'elmahead@omatom.com')); // {объект пользователя Elma Head}
@@ -143,7 +145,7 @@ console.log(getUserByEmail(users, 'elmahead@omatom.com')); // {объект по
 /**
  * Получить массив пользователей попадающих в возрастную категорию от min до max лет (поле age)
  */
-const getUsersWithAge = (arr, min, max) => arr.filter(val => val.age >= min && val.age <= max);
+const getUsersWithAge = (users, min, max) => users.filter(user => user.age >= min && user.age <= max);
 
 console.log(getUsersWithAge(users, 20, 30)); // [объект Ross Vazquez, объект Elma Head, объект Carey Barr]
                                             
@@ -154,7 +156,7 @@ console.log(getUsersWithAge(users, 30, 40));
 /**
  * Получить общую сумму баланса (поле balance) всех пользователей
  */
-const getTotalBalance = arr => arr.reduce((acc, val) => acc += val.balance, 0);
+const getTotalBalance = users => users.reduce((acc, user) => acc + user.balance, 0);
 
 console.log(getTotalBalance(users)); // 20916
                                 
@@ -162,7 +164,7 @@ console.log(getTotalBalance(users)); // 20916
 /*
  * Массив имен всех пользователей у которых есть друг с указанным именем
  */
-const getUsersByFriend = (arr, name) => arr.filter(val => val.friends.includes(name));
+const getUsersByFriend = (users, name) => users.filter(user => user.friends.includes(name));
 
 console.log(getUsersByFriend(users, 'Briana Decker')); // [ 'Sharlene Bush', 'Sheree Anthony' ]
 console.log(getUsersByFriend(users, 'Goldie Gentry')); // [ 'Elma Head', 'Sheree Anthony' ]
@@ -177,9 +179,9 @@ console.log(getUsersByFriend(users, 'Goldie Gentry')); // [ 'Elma Head', 'Sheree
 * Получить массив всех скиллов всех пользователей (поле skills), при этом не должно быть
 * повторяющихся скиллов и они должны быть отсортированы в алфавитном порядке
 */
-const getAllSkills = arr => {
+const getAllSkills = users => {
 let unicSkills = [];
-arr.reduce((acc, val) => val.skills.forEach(skill => {
+users.reduce((acc, user) => user.skills.forEach(skill => {
   if (!unicSkills.includes(skill)) {
     unicSkills.push(skill);
     unicSkills.sort()
@@ -195,10 +197,10 @@ console.log(getAllSkills(users));
 /**
 * Массив имен (поле name) людей, отсортированных в зависимости от количества их друзей (поле friends)
 */
-const getUserNamesSortedByFriendsCount = arr => {
-  let namesSortedByFriends = arr
+const getUserNamesSortedByFriendsCount = users => {
+  let namesSortedByFriends = users
   .sort((a, b) => a.friends.length - b.friends.length)
-  .map(val => val.name)
+  .map(user => user.name)
   
   return namesSortedByFriends
 };
