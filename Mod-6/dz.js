@@ -33,29 +33,9 @@ class Hamburger {
     if (!this.toppings.includes(topping)) this.toppings.push(topping);
   }
   //  * Убрать topping, при условии, что она ранее была добавлена
+  removeTopping(RemovedTopping) {
+     this._toppings = this.toppings.filter(topping => topping !== RemovedTopping)};
 
-  // removeTopping(topping) {
-  //   if (this.toppings.includes(topping)) {
-  //     this.toppings.splice(this.toppings.indexOf(topping), 1);
-  //     return this.toppings;
-  //   }
-  //   return this.toppings;
-  // }
-
-  removeTopping(RemovedTopping) { //?????????????????????????????????
-    console.log(this.toppings);
-     let newToppings = this.toppings.filter(function (topping) {
-      return topping !== RemovedTopping;
-      // console.log(this.toppings)
-      // return this.toppings
-    });
-    console.log(newToppings);
-    return newToppings
-  };
-
-  set toppings(callback) {
-    this._toppings = callback();
-  }
   //  * Получить список toppings
   //  * Попробуйте сделать это геттером чтобы можно было обращаться как obj.toppings и нам вернет массив добавок
   get toppings() {
@@ -73,49 +53,23 @@ class Hamburger {
   //  * Узнать цену гамбургера
   //  * Попробуйте сделать это геттером чтобы можно было обращаться как obj.price и нам вернет сумму.
 
-  // get price() {
-  //   return this._price;
-  // };
 get price() {
-  const hamburgerData = Object.assign({}, Hamburger.SIZES, Hamburger.STUFFINGS, Hamburger.TOPPINGS);
-    let price = hamburgerData[this.size].price + hamburgerData[this.stuffing].price;
+  this._price = Hamburger.SIZES[this.size].price + Hamburger.STUFFINGS[this.stuffing].price;
     if (this.toppings.length > 0) {
-     price += this.toppings.reduce(function(acc, topping) {
-        let toppingsPrice = acc + hamburgerData[topping].price;
-        return toppingsPrice
-      }, 0)
+     this._price += this.toppings.reduce((acc, topping) => 
+        acc + Hamburger.TOPPINGS[topping].price, 0);
     }
-    return price
+    return this._price
 };
-  // calculatePrice() {
-  //   const hamburgerData = Object.assign({}, Hamburger.SIZES, Hamburger.STUFFINGS, Hamburger.TOPPINGS);
-  //   let price = hamburgerData[this.size].price + hamburgerData[this.stuffing].price;
-  //   if (this.toppings.length > 0) {
-  //    price += this.toppings.reduce(function(acc, topping) {
-  //       let toppingsPrice = acc + hamburgerData[topping].price;
-  //       return toppingsPrice
-  //     }, 0)
-  //   }
-  //   return price
-  // };
-
-  // set price (callback) {               ?===Так как-то не бывает? Чтобы работало hamburger.price?===?
-  //   this._price = calculatePrice();
-  // }
-
+  
   //  * Узнать калорийность
-  get calories() {
-    return this._calories;
-  }
   calculateCalories() {
     let calories = Hamburger.SIZES[this.size].calories + Hamburger.STUFFINGS[this.stuffing].calories;
-    if (this.toppings.includes(Hamburger.TOPPING_SPICE)) {
-      calories += Hamburger.TOPPINGS[Hamburger.TOPPING_SPICE].calories;
-    }
-    if (this.toppings.includes(Hamburger.TOPPING_SAUCE)) {
-      calories += Hamburger.TOPPINGS[Hamburger.TOPPING_SAUCE].calories;
-    }
-    return calories;
+    if (this.toppings.length > 0) {
+      calories += this.toppings.reduce((acc, topping) => 
+         acc + Hamburger.TOPPINGS[topping].calories, 0);
+     }
+     return calories
   }
   // Размеры, виды добавок и начинок объявите как статические поля класса.
   // Hamburger.SIZE_SMALL = 'SIZE_SMALL';
@@ -236,8 +190,6 @@ console.log(
 
 // Убрать добавку
 hamburger.removeTopping(Hamburger.TOPPING_SPICE);
-// console.log(hamburger.removeTopping(Hamburger.TOPPING_SPICE));
-// hamburger._toppings = hamburger._toppings(hamburger.removeTopping());
 // hamburger.removeTopping(Hamburger.TOPPING_SPICE);
 // hamburger.removeTopping(Hamburger.TOPPING_SAUCE);
 
@@ -261,13 +213,11 @@ console.log("Hamburger has stuffing:", hamburger.stuffing);
 */
 
   
-  // calculatePrice() {
+  // // calculatePrice() {
   //   let price = Hamburger.SIZES[this.size].price + Hamburger.STUFFINGS[this.stuffing].price;
-  //   if (this.toppings.includes(Hamburger.TOPPING_SPICE)) {
-  //     price += Hamburger.TOPPINGS[Hamburger.TOPPING_SPICE].price;
+  //   if (this.toppings.length > 0) {
+  //    price += this.toppings.reduce((acc, topping) => 
+  //       acc + Hamburger.TOPPINGS[topping].price, 0);
   //   }
-  //   if (this.toppings.includes(Hamburger.TOPPING_SAUCE)) {
-  //     price += Hamburger.TOPPINGS[Hamburger.TOPPING_SAUCE].price;
-  //   }
-  //   return price;
+  //   return price
   // };
