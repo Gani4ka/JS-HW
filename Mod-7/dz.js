@@ -49,7 +49,7 @@ const posts = [
   Добавьте классы и атрибуты.
 */
 
-let arrayWithPosts = [];
+// let arrayWithPosts = createCards;
 
 const createPostCard = function(postObj) {
 
@@ -80,13 +80,12 @@ const createPostCard = function(postObj) {
   post.appendChild(text);
   post.appendChild(button);
   
-  return arrayWithPosts.push(post);
+  return post
 };
 
 function createCards(postsArr) {
-  postsArr.forEach(postObj => createPostCard(postObj));
-
-document.body.append(...arrayWithPosts);
+  return postsArr.map(postObj => createPostCard(postObj));
 };
 
-createCards(posts);
+const arrayWithPosts = createCards(posts);
+document.body.append(...arrayWithPosts);
