@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  padding: 3px 50px;
+  background-color: blanchedalmond;
+}
+
+.image-gallery {
+  margin: 0 auto;
+  border: 5px solid grey;
+  width: 934px;
+  height: auto;
+}
+
+.fullview {
+overflow: hidden;
+border-bottom: 5px solid grey;
+}
+
+img {
+  display: block;
+  border: 2px solid grey;
+  cursor: pointer;
+}
+
+.img-active {
+  border: 2px solid red;
+}
+
+.img-big {
+max-width: 100%;
+cursor: auto;
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
