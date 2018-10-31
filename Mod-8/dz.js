@@ -53,16 +53,6 @@
   Массив объектов с данными для создания компонента выглядит следующим образом.
   Замените пути на соотвествующие вашим, или назовите изображения аналогично.
 */
-const container = document.querySelector(".js-image-gallery");
-
-const galleryItems = [
-  { preview: "img/1-150.jpeg", fullview: "img/1-1920.jpeg", alt: "alt text 1" },
-  { preview: "img/2-150.jpeg", fullview: "img/2-1920.jpeg", alt: "alt text 2" },
-  { preview: "img/3-150.jpeg", fullview: "img/3-1920.jpeg", alt: "alt text 3" },
-  { preview: "img/4-150.jpeg", fullview: "img/4-1920.jpeg", alt: "alt text 4" },
-  { preview: "img/5-150.jpeg", fullview: "img/5-1920.jpeg", alt: "alt text 5" },
-  { preview: "img/6-150.jpeg", fullview: "img/6-1920.jpeg", alt: "alt text 6" }
-];
 
 /*
   ⚠️ ЗАДАНИЕ ПОВЫШЕННОЙ СЛОЖНОСТИ - ВЫПОЛНЯТЬ ПО ЖЕЛАНИЮ
@@ -78,77 +68,92 @@ const galleryItems = [
     
   Тогда создание экземпляра будет выглядеть следующим образом.
 */
+const container = document.querySelector(".js-image-gallery");
+
+const galleryItems = [
+  { preview: "img/1-150.jpeg", fullview: "img/1-1920.jpeg", alt: "alt text 1" },
+  { preview: "img/2-150.jpeg", fullview: "img/2-1920.jpeg", alt: "alt text 2" },
+  { preview: "img/3-150.jpeg", fullview: "img/3-1920.jpeg", alt: "alt text 3" },
+  { preview: "img/4-150.jpeg", fullview: "img/4-1920.jpeg", alt: "alt text 4" },
+  { preview: "img/5-150.jpeg", fullview: "img/5-1920.jpeg", alt: "alt text 5" },
+  { preview: "img/6-150.jpeg", fullview: "img/6-1920.jpeg", alt: "alt text 6" }
+];
+
 
 class Gallery {
   constructor(items, parentNode, defaultActiveItem) {
     this.items = items;
     this.parentNode = parentNode;
     this.defaultActiveItem = defaultActiveItem;
+    this.setEventListener(window, 'DOMContentLoaded', this.createGallery.bind(this));
+  };
+
+  setEventListener(node, event, handler) {
+    node.addEventListener(event, handler)
+  };
+
+  createGallery() {
+    const fullview = document.createElement("div");
+    const previewList = document.createElement("ul");
+    fullview.classList.add("fullview");
+    previewList.classList.add("preview");
+    this.parentNode.append(fullview, previewList);
+
+    let liList = [];
+
+    this.items.map(item => {
+      let li = document.createElement("li");
+      let img = document.createElement("img");
+      img.setAttribute("src", item.preview);
+      img.setAttribute("data-fullview", item.fullview);
+      img.setAttribute("alt", item.alt);
+      img.setAttribute("width", 150);
+      li.appendChild(img);
+      liList.push(li);
+    });
+    previewList.append(...liList);
+
+    let firstImg = liList[
+      this.defaultActiveItem - 1
+    ].firstElementChild.cloneNode(true);
+    firstImg.setAttribute("src", firstImg.dataset.fullview);
+    firstImg.setAttribute("width", 1280);
+    firstImg.classList.add("img-big");
+    fullview.appendChild(firstImg);
 
     function setEventListener(node, event, handler) {
-      node.addEventListener(event, handler);
+      node.addEventListener(event, handler)
+    };
+    setEventListener(previewList, "click", makeFullview);
+    setEventListener(previewList, "mouseover", makeBorder);
+    setEventListener(previewList, "mouseout", removeBorder);
+
+    function makeFullview() {
+      event.preventDefault();
+      if (event.target.nodeName !== "IMG") return;
+
+      let clone = event.target.cloneNode(true);
+      fullview.firstElementChild.replaceWith(clone);
+      clone.setAttribute("src", event.target.dataset.fullview);
+      clone.setAttribute("width", 1280);
+      clone.classList.add("img-big");
+      clone.classList.remove("img-active");
     }
-    setEventListener(window, "DOMContentLoaded", createGallery.bind(this));
 
-    function createGallery() {
-      const fullview = document.createElement("div");
-      const previewList = document.createElement("ul");
-      fullview.classList.add("fullview");
-      previewList.classList.add("preview");
-      this.parentNode.append(fullview, previewList);
-
-      let liList = [];
-
-      this.items.map(item => {
-        let li = document.createElement("li");
-        let img = document.createElement("img");
-        img.setAttribute("src", item.preview);
-        img.setAttribute("data-fullview", item.fullview);
-        img.setAttribute("alt", item.alt);
-        li.appendChild(img);
-        liList.push(li);
+    function makeBorder() {
+      liList.forEach(li => {
+        if (li.firstElementChild === event.target) {
+          li.firstElementChild.classList.add("img-active");
+        } else {
+          li.firstElementChild.classList.remove("img-active");
+        }
       });
-      previewList.append(...liList);
+    }
 
-      let firstImg = liList[
-        this.defaultActiveItem - 1
-      ].firstElementChild.cloneNode(true);
-      firstImg.setAttribute("src", firstImg.dataset.fullview);
-      firstImg.classList.add("img-big");
-      fullview.appendChild(firstImg);
-
-      setEventListener(previewList, "click", makeFullview.bind(this));
-      setEventListener(previewList, "mouseover", makeBorder.bind(this));
-      setEventListener(previewList, "mouseout", removeBorder.bind(this));
-
-      function makeFullview() {
-        event.preventDefault();
-        if (event.target.nodeName !== "IMG") return;
-
-        let clone = event.target.cloneNode(true);
-        fullview.firstElementChild.replaceWith(clone);
-        clone.setAttribute("src", event.target.dataset.fullview);
-        clone.classList.add("img-big");
-        clone.classList.remove("img-active");
-      }
-
-      function makeBorder() {
-        liList.forEach(li => {
-          if (li.firstElementChild === event.target) {
-            li.firstElementChild.classList.add("img-active");
-          } else {
-            li.firstElementChild.classList.remove("img-active");
-          }
-        });
-      }
-
-      function removeBorder () {
-        event.target.classList.remove("img-active");
-      }
+    function removeBorder() {
+      event.target.classList.remove("img-active");
     }
   }
 }
 
 const gallery1 = new Gallery(galleryItems, container, 1);
-
-/* Далее плагин работает в автономном режиме */

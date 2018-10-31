@@ -33,6 +33,7 @@ img {
 
 .img-big {
 max-width: 100%;
+border: none;
 cursor: auto;
 }
 
