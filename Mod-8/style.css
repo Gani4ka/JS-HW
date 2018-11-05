@@ -30,9 +30,13 @@ img {
   border: 2px solid grey;
   cursor: pointer;
 }
- img:active {
+ /* img:active {
   border: 2px solid red;
- }
+ } */
+
+.img-active {
+  border: 2px solid red;
+}
 
 ul {
   list-style: none;

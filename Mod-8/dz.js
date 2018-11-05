@@ -111,12 +111,23 @@ class Gallery {
     fullview.style.backgroundImage = `url(${liList[this.defaultActiveItem - 1].firstElementChild.dataset.fullview})`;
     
     previewList.addEventListener("click", makeFullview);
+    previewList.addEventListener("click", makeBorder);
 
     function makeFullview() {
       event.preventDefault();
       if (event.target.nodeName !== "IMG") return;
 
       fullview.style.backgroundImage = `url(${event.target.dataset.fullview})`;
+    }
+
+    function makeBorder() {
+      liList.forEach(li => {
+        if (li.firstElementChild === event.target) {
+          li.firstElementChild.classList.add("img-active");
+        } else {
+          li.firstElementChild.classList.remove("img-active");
+        }
+      });
     }
   }
 }
