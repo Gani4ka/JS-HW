@@ -108,21 +108,15 @@ class Gallery {
     });
     previewList.append(...liList);
 
-    let firstImg = document.createElement('img');
-    firstImg.setAttribute("src", liList[this.defaultActiveItem - 1].firstElementChild.dataset.fullview);
-    firstImg.classList.add("img-big");
-    fullview.appendChild(firstImg);
-
+    fullview.style.backgroundImage = `url(${liList[this.defaultActiveItem - 1].firstElementChild.dataset.fullview})`;
+    
     previewList.addEventListener("click", makeFullview);
 
     function makeFullview() {
       event.preventDefault();
       if (event.target.nodeName !== "IMG") return;
 
-      let clone = event.target.cloneNode(true);
-      fullview.firstElementChild.replaceWith(clone);
-      clone.setAttribute("src", event.target.dataset.fullview);
-      clone.classList.add("img-big");
+      fullview.style.backgroundImage = `url(${event.target.dataset.fullview})`;
     }
   }
 }

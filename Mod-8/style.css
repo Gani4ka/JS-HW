@@ -17,11 +17,15 @@ body {
 }
 
 .fullview {
+  height: 624px;
 overflow: hidden;
 border-bottom: 5px solid grey;
+background-size: cover;
+background-repeat: no-repeat;
 }
 
 img {
+  max-width: 100%;
   display: block;
   border: 2px solid grey;
   cursor: pointer;
@@ -29,13 +33,6 @@ img {
  img:active {
   border: 2px solid red;
  }
-
-.img-big {
-  width: 1280%;
-max-width: 100%;
-border: none;
-cursor: auto;
-}
 
 ul {
   list-style: none;
