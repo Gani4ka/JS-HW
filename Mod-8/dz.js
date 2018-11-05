@@ -108,9 +108,8 @@ class Gallery {
     });
     previewList.append(...liList);
 
-    let firstImg = liList[
-      this.defaultActiveItem - 1].firstElementChild.cloneNode(true);
-    firstImg.setAttribute("src", firstImg.dataset.fullview);
+    let firstImg = document.createElement('img');
+    firstImg.setAttribute("src", liList[this.defaultActiveItem - 1].firstElementChild.dataset.fullview);
     firstImg.classList.add("img-big");
     fullview.appendChild(firstImg);
 
