@@ -85,11 +85,6 @@ class Gallery {
     this.items = items;
     this.parentNode = parentNode;
     this.defaultActiveItem = defaultActiveItem;
-    this.setEventListener(window, 'DOMContentLoaded', this.createGallery.bind(this));
-  };
-
-  setEventListener(node, event, handler) {
-    node.addEventListener(event, handler)
   };
 
   createGallery() {
@@ -114,19 +109,12 @@ class Gallery {
     previewList.append(...liList);
 
     let firstImg = liList[
-      this.defaultActiveItem - 1
-    ].firstElementChild.cloneNode(true);
+      this.defaultActiveItem - 1].firstElementChild.cloneNode(true);
     firstImg.setAttribute("src", firstImg.dataset.fullview);
-    firstImg.setAttribute("width", 1280);
     firstImg.classList.add("img-big");
     fullview.appendChild(firstImg);
 
-    function setEventListener(node, event, handler) {
-      node.addEventListener(event, handler)
-    };
-    setEventListener(previewList, "click", makeFullview);
-    setEventListener(previewList, "mouseover", makeBorder);
-    setEventListener(previewList, "mouseout", removeBorder);
+    previewList.addEventListener("click", makeFullview);
 
     function makeFullview() {
       event.preventDefault();
@@ -135,25 +123,10 @@ class Gallery {
       let clone = event.target.cloneNode(true);
       fullview.firstElementChild.replaceWith(clone);
       clone.setAttribute("src", event.target.dataset.fullview);
-      clone.setAttribute("width", 1280);
       clone.classList.add("img-big");
-      clone.classList.remove("img-active");
-    }
-
-    function makeBorder() {
-      liList.forEach(li => {
-        if (li.firstElementChild === event.target) {
-          li.firstElementChild.classList.add("img-active");
-        } else {
-          li.firstElementChild.classList.remove("img-active");
-        }
-      });
-    }
-
-    function removeBorder() {
-      event.target.classList.remove("img-active");
     }
   }
 }
 
 const gallery1 = new Gallery(galleryItems, container, 1);
+gallery1.createGallery();

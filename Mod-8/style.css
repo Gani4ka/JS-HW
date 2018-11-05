@@ -26,12 +26,12 @@ img {
   border: 2px solid grey;
   cursor: pointer;
 }
-
-.img-active {
+ img:active {
   border: 2px solid red;
-}
+ }
 
 .img-big {
+  width: 1280%;
 max-width: 100%;
 border: none;
 cursor: auto;
