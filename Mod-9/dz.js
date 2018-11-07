@@ -45,13 +45,15 @@ const timer = {
   isActive: false,
   timeArr: [],
 };
-
+//========Вешаю слушатели
 startBtn.addEventListener('click', startTimer);
 resetBtn.addEventListener('click', resetTimer);
 lapBtn.addEventListener('click', takeLap);
 
+//=======Кнопка reset неактивна по умолчанию
 resetBtn.setAttribute('disabled', 'disabled');
 
+//======Хендлер: Начало отсчета + Пауза
 function startTimer () {
     if (timer.isActive === false) {
   timer.id = setInterval(updateClockface, 100);
@@ -65,6 +67,7 @@ function startTimer () {
       startBtn.addEventListener('click', pauseTimer);
   }
 }
+//======Хендлер: Пауза
 function pauseTimer () {
     if (timer.isActive === true) {
   clearInterval(timer.id);
@@ -75,6 +78,7 @@ function pauseTimer () {
     }
     }
 }
+//======Хендлер: Сброс
 function resetTimer () {
     // console.log('hh');
     clearInterval(timer.id);
@@ -84,6 +88,7 @@ function resetTimer () {
     resetBtn.setAttribute('disabled', 'disabled');
     startBtn.addEventListener('click', startTimer);
 }
+//====Запись данных таймера
 function takeLap () {
 timer.timeArr.unshift(getFormattedTime(timer.startTime));
 const li = document.createElement('li');
@@ -99,8 +104,7 @@ function updateClockface() {
   timer.startTime += 99;
   clockface.textContent = getFormattedTime(timer.startTime);
 }
-
-
+//====Преобразуем время
 function getFormattedTime(time) {
   let ms = Math.floor((time % 1000)/100);
   let sec = Math.floor(time/1000 % 60);
