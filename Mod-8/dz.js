@@ -79,15 +79,17 @@ const galleryItems = [
   { preview: "img/6-150.jpeg", fullview: "img/6-1920.jpeg", alt: "alt text 6" }
 ];
 
-
+//==Создаем класс
 class Gallery {
+//==Конструктор
   constructor(items, parentNode, defaultActiveItem) {
     this.items = items;
     this.parentNode = parentNode;
     this.defaultActiveItem = defaultActiveItem;
   };
-
+//==основная ф-ция
   createGallery() {
+    //==Создаем разметку
     const fullview = document.createElement("div");
     const previewList = document.createElement("ul");
     fullview.classList.add("fullview");
@@ -109,24 +111,27 @@ class Gallery {
     previewList.append(...liList);
 
     fullview.style.backgroundImage = `url(${liList[this.defaultActiveItem - 1].firstElementChild.dataset.fullview})`;
+    liList[this.defaultActiveItem - 1].firstElementChild.classList.add("img-active");
     
+//==Вешаем слушатели
     previewList.addEventListener("click", makeFullview);
     previewList.addEventListener("click", makeBorder);
-
+//==Хендлер: выводим превью-картинку в большом виде
     function makeFullview() {
       event.preventDefault();
       if (event.target.nodeName !== "IMG") return;
-
       fullview.style.backgroundImage = `url(${event.target.dataset.fullview})`;
     }
-
+//==Хендлер: оформление активной превью-картинки
     function makeBorder() {
       liList.forEach(li => {
         if (li.firstElementChild === event.target) {
           li.firstElementChild.classList.add("img-active");
-        } else {
-          li.firstElementChild.classList.remove("img-active");
         }
+         else {
+          li.firstElementChild.classList.remove("img-active");
+        } 
+        
       });
     }
   }
