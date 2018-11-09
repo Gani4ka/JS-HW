@@ -32,85 +32,134 @@
 - Функционал кнопки button.js-take-lap при клике - сохранение текущего времени секундомера 
   в массив и добавление в ul.js-laps нового li с сохраненным временем в формате xx:xx.x
 */
-const clockface = document.querySelector(".js-time");
-const startBtn = document.querySelector(".js-start");
-const resetBtn = document.querySelector(".js-reset");
-const lapBtn = document.querySelector(".js-take-lap");
-const laps = document.querySelector(".js-laps");
+/*
+⚠️ ЗАДАНИЕ ПОВЫШЕННОЙ СЛОЖНОСТИ - ВЫПОЛНЯТЬ ПО ЖЕЛАНИЮ
+  
+  Выполните домашнее задание используя класс с полями и методами.
+  
+  На вход класс Stopwatch принимает только ссылку на DOM-узел в котором будет 
+  динамически создана вся разметка для секундомера.
+  
+  Должна быть возможность создать сколько угодно экземпляров секундоментов 
+  на странице и все они будут работать независимо.
+  
+  К примеру:
+  
+  new Stopwatch(parentA);
+  new Stopwatch(parentB);
+  new Stopwatch(parentC);
+  
+  Где parent* это существующий DOM-узел. 
+*/
 
-const timer = {
-  startTime: null,
-  deltaTime: null,
-  id: null,
-  isActive: false,
-  timeArr: [],
-};
-//========Вешаю слушатели
-startBtn.addEventListener('click', startTimer);
-resetBtn.addEventListener('click', resetTimer);
-lapBtn.addEventListener('click', takeLap);
+class Stopwatch {
+  constructor(parentNode) {
+    this.parentNode = parentNode;
+    this.startTime = null,
+    this.id = null,
+    this.isActive = false,
+    this.timeArr = [],
+    this.clockface = document.createElement('p');
+    this.startBtn = document.createElement('button');
+    this.resetBtn = document.createElement('button');
+    this.lapBtn = document.createElement('button');
+    this.laps = document.createElement('ul');
 
-//=======Кнопка reset неактивна по умолчанию
-resetBtn.setAttribute('disabled', 'disabled');
-
-//======Хендлер: Начало отсчета + Пауза
-function startTimer () {
-    if (timer.isActive === false) {
-  timer.id = setInterval(updateClockface, 100);
-  timer.isActive = true;
-  startBtn.textContent = 'Pause';
-  resetBtn.removeAttribute('disabled');
+    //====Обновление счетчика
+    this.updateClockface = function updateClockface() {
+      this.startTime += 99;
+      this.clockface.textContent = this.getFormattedTime(this.startTime);
+    };
+     //====Преобразуем время
+     this.getFormattedTime =function getFormattedTime(time) {
+      let ms = Math.floor((time % 1000) / 100);
+      let sec = Math.floor(time / 1000 % 60);
+      let min = Math.floor(time / 1000 / 60 % 60);
+      min = min >= 10 ? min : `0${min}`;
+      sec = sec >= 10 ? sec : `0${sec}`;
+      return `${min}:${sec}.${ms}`;
     }
-  if (timer.isActive === true) {
-      startBtn.textContent = 'Pause';
-      startBtn.removeEventListener('click', startTimer);
-      startBtn.addEventListener('click', pauseTimer);
+  }
+  //==Create layout
+  createHTML() {
+    //==Add classes
+    this.clockface.classList.add("js-time", "time", "clockface");
+    this.startBtn.classList.add("btn", "js-start");
+    this.lapBtn.classList.add('btn', 'js-take-lap');
+    this.resetBtn.classList.add('btn', 'js-reset');
+    this.laps.classList.add('laps', 'js-laps');
+    //==Add atributes
+    this.resetBtn.setAttribute('disabled', 'disabled');
+    //==Add text
+    this.clockface.textContent = '00:00.0';
+    this.startBtn.textContent = 'start';
+    this.lapBtn.textContent = 'lap';
+    this.resetBtn.textContent = 'reset'
+    //==Insert into parent
+    this.parentNode.append(this.clockface);
+    this.parentNode.append(this.startBtn);
+    this.parentNode.append(this.lapBtn);
+    this.parentNode.append(this.resetBtn);
+    this.parentNode.append(this.laps);
+  }
+
+  //==Add listeners + handlers
+  addListeners() {
+    this.startBtn.addEventListener('click', startTimer.bind(this));
+    this.resetBtn.addEventListener('click', resetTimer.bind(this));
+    this.lapBtn.addEventListener('click', takeLap.bind(this));
+
+    //======Handler: Start + Add listener Pause
+    function startTimer() {
+      if (this.isActive === false) {
+        this.id = setInterval(this.updateClockface.bind(this), 100);
+        this.isActive = true;
+        this.startBtn.textContent = 'Pause';
+        this.resetBtn.removeAttribute('disabled');
+      }
+      if (this.isActive === true) {
+        this.startBtn.textContent = 'Pause';
+        this.startBtn.removeEventListener('click', startTimer.bind(this));
+        this.startBtn.addEventListener('click', pauseTimer.bind(this));
+      }
+    }
+
+    //======Handler: Pause
+    function pauseTimer() {
+      if (this.isActive === true) {
+        clearInterval(this.id);
+        this.isActive = false;
+        this.startBtn.textContent = 'Continue';
+        if (this.isActive === false) {
+          this.startBtn.addEventListener('click', startTimer.bind(this));
+        }
+      }
+    }
+
+    //======Handler: Reset
+    function resetTimer() {
+      clearInterval(this.id);
+      this.startTime = null;
+      this.updateClockface();
+      this.startBtn.textContent = 'Start';
+      this.resetBtn.setAttribute('disabled', 'disabled');
+      this.startBtn.addEventListener('click', startTimer.bind(this));
+      this.timeArr = [];
+      while (this.laps.firstChild) {
+        this.laps.removeChild(this.laps.firstChild);
+      }
+    }
+    //====Handler: Lap (data record)
+    function takeLap() {
+      const li = document.createElement('li');
+      li.textContent = this.getFormattedTime(this.startTime);
+      this.timeArr.unshift(li);
+      this.laps.append(this.timeArr[0])
+    }
   }
 }
-//======Хендлер: Пауза
-function pauseTimer () {
-    if (timer.isActive === true) {
-  clearInterval(timer.id);
-  timer.isActive = false;
-  startBtn.textContent = 'Continue';
-    if (timer.isActive === false) {
-        startBtn.addEventListener('click', startTimer);
-    }
-    }
-}
-//======Хендлер: Сброс
-function resetTimer () {
-    // console.log('hh');
-    clearInterval(timer.id);
-    timer.startTime = null;
-    updateClockface();
-    startBtn.textContent = 'Start';
-    resetBtn.setAttribute('disabled', 'disabled');
-    startBtn.addEventListener('click', startTimer);
-}
-//====Запись данных таймера
-function takeLap () {
-timer.timeArr.unshift(getFormattedTime(timer.startTime));
-const li = document.createElement('li');
-li.textContent = timer.timeArr[0];
-laps.append(li)
-}
 
-/*
-* Обновляет поле счетчика новым значением при вызове
-* аргумент time это кол-во миллисекунд
-*/
-function updateClockface() {
-  timer.startTime += 99;
-  clockface.textContent = getFormattedTime(timer.startTime);
-}
-//====Преобразуем время
-function getFormattedTime(time) {
-  let ms = Math.floor((time % 1000)/100);
-  let sec = Math.floor(time/1000 % 60);
-  let min = Math.floor(time/1000/60 % 60);
-  min = min >= 10 ? min : `0${min}`;
-  sec = sec >= 10 ? sec : `0${sec}`;
-  
-  return `${min}:${sec}.${ms}`;
-}
+const stopwatchDiv = document.querySelector('.stopwatch');
+const stopwatch = new Stopwatch(stopwatchDiv);
+stopwatch.createHTML();
+stopwatch.addListeners();
