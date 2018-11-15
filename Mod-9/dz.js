@@ -65,23 +65,12 @@ class Stopwatch {
     this.lapBtn = document.createElement('button');
     this.laps = document.createElement('ul');
 
-    //====Обновление счетчика
-    this.updateClockface = function updateClockface() {
-      this.startTime += 99;
-      this.clockface.textContent = this.getFormattedTime(this.startTime);
-    };
-     //====Преобразуем время
-     this.getFormattedTime =function getFormattedTime(time) {
-      let ms = Math.floor((time % 1000) / 100);
-      let sec = Math.floor(time / 1000 % 60);
-      let min = Math.floor(time / 1000 / 60 % 60);
-      min = min >= 10 ? min : `0${min}`;
-      sec = sec >= 10 ? sec : `0${sec}`;
-      return `${min}:${sec}.${ms}`;
-    }
+    this.createTimer()
   }
-  //==Create layout
-  createHTML() {
+
+  createTimer() {
+    //==Create layout
+
     //==Add classes
     this.clockface.classList.add("js-time", "time", "clockface");
     this.startBtn.classList.add("btn", "js-start");
@@ -101,65 +90,78 @@ class Stopwatch {
     this.parentNode.append(this.lapBtn);
     this.parentNode.append(this.resetBtn);
     this.parentNode.append(this.laps);
+    //==Add listeners
+    this.startBtn.addEventListener('click', this.startTimer.bind(this));
+    this.resetBtn.addEventListener('click', this.resetTimer.bind(this));
+    this.lapBtn.addEventListener('click', this.takeLap.bind(this));
+  }
+  //======Methods:
+
+  //==Handlers:
+
+  //======Handler: Start + Add listener Pause
+  startTimer() {
+    if (this.isActive === false) {
+      this.id = setInterval(this.updateClockface.bind(this), 100);
+      this.isActive = true;
+      this.startBtn.textContent = 'Pause';
+      this.resetBtn.removeAttribute('disabled');
+    }
+    if (this.isActive === true) {
+      this.startBtn.textContent = 'Pause';
+      this.startBtn.removeEventListener('click', this.startTimer.bind(this));
+      this.startBtn.addEventListener('click', this.pauseTimer.bind(this));
+    }
+  }
+  //======Handler: Pause
+  pauseTimer() {
+    if (this.isActive === true) {
+      clearInterval(this.id);
+      this.isActive = false;
+      this.startBtn.textContent = 'Continue';
+      if (this.isActive === false) {
+        this.startBtn.addEventListener('click', this.startTimer.bind(this));
+      }
+    }
+  }
+  //======Handler: Reset
+  resetTimer() {
+    clearInterval(this.id);
+    this.startTime = null;
+    this.updateClockface();
+    this.startBtn.textContent = 'Start';
+    this.resetBtn.setAttribute('disabled', 'disabled');
+    this.startBtn.addEventListener('click', this.startTimer.bind(this));
+    this.timeArr = [];
+    while (this.laps.firstChild) {
+      this.laps.removeChild(this.laps.firstChild);
+    }
+  }
+  //====Handler: Lap (data record)
+  takeLap() {
+    const li = document.createElement('li');
+    li.textContent = this.getFormattedTime(this.startTime);
+    this.timeArr.unshift(li);
+    this.laps.append(this.timeArr[0])
   }
 
-  //==Add listeners + handlers
-  addListeners() {
-    this.startBtn.addEventListener('click', startTimer.bind(this));
-    this.resetBtn.addEventListener('click', resetTimer.bind(this));
-    this.lapBtn.addEventListener('click', takeLap.bind(this));
+//==Assistant methods
 
-    //======Handler: Start + Add listener Pause
-    function startTimer() {
-      if (this.isActive === false) {
-        this.id = setInterval(this.updateClockface.bind(this), 100);
-        this.isActive = true;
-        this.startBtn.textContent = 'Pause';
-        this.resetBtn.removeAttribute('disabled');
-      }
-      if (this.isActive === true) {
-        this.startBtn.textContent = 'Pause';
-        this.startBtn.removeEventListener('click', startTimer.bind(this));
-        this.startBtn.addEventListener('click', pauseTimer.bind(this));
-      }
-    }
-
-    //======Handler: Pause
-    function pauseTimer() {
-      if (this.isActive === true) {
-        clearInterval(this.id);
-        this.isActive = false;
-        this.startBtn.textContent = 'Continue';
-        if (this.isActive === false) {
-          this.startBtn.addEventListener('click', startTimer.bind(this));
-        }
-      }
-    }
-
-    //======Handler: Reset
-    function resetTimer() {
-      clearInterval(this.id);
-      this.startTime = null;
-      this.updateClockface();
-      this.startBtn.textContent = 'Start';
-      this.resetBtn.setAttribute('disabled', 'disabled');
-      this.startBtn.addEventListener('click', startTimer.bind(this));
-      this.timeArr = [];
-      while (this.laps.firstChild) {
-        this.laps.removeChild(this.laps.firstChild);
-      }
-    }
-    //====Handler: Lap (data record)
-    function takeLap() {
-      const li = document.createElement('li');
-      li.textContent = this.getFormattedTime(this.startTime);
-      this.timeArr.unshift(li);
-      this.laps.append(this.timeArr[0])
-    }
+  //====Update timer
+  updateClockface() {
+    this.startTime += 99;
+    this.clockface.textContent = this.getFormattedTime(this.startTime);
+  }
+  //====Convert time from Unix
+  getFormattedTime(time) {
+    let ms = Math.floor((time % 1000) / 100);
+    let sec = Math.floor(time / 1000 % 60);
+    let min = Math.floor(time / 1000 / 60 % 60);
+    min = min >= 10 ? min : `0${min}`;
+    sec = sec >= 10 ? sec : `0${sec}`;
+    return `${min}:${sec}.${ms}`;
   }
 }
 
 const stopwatchDiv = document.querySelector('.stopwatch');
 const stopwatch = new Stopwatch(stopwatchDiv);
-stopwatch.createHTML();
-stopwatch.addListeners();
