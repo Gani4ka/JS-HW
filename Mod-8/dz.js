@@ -94,7 +94,6 @@ class Gallery {
     const previewList = document.createElement("ul");
     fullview.classList.add("fullview");
     previewList.classList.add("preview");
-    this.parentNode.append(fullview, previewList);
 
     let liList = [];
 
@@ -109,6 +108,8 @@ class Gallery {
       liList.push(li);
     });
     previewList.append(...liList);
+
+    this.parentNode.append(fullview, previewList);
 
     fullview.style.backgroundImage = `url(${liList[this.defaultActiveItem - 1].firstElementChild.dataset.fullview})`;
     liList[this.defaultActiveItem - 1].firstElementChild.classList.add("img-active");
