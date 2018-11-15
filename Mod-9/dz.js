@@ -86,10 +86,6 @@ class Stopwatch {
     this.resetBtn.textContent = 'reset'
     //==Insert into parent
     this.parentNode.append(this.clockface, this.startBtn, this.lapBtn, this.resetBtn, this.laps);
-    // this.parentNode.append(this.startBtn);
-    // this.parentNode.append(this.lapBtn);
-    // this.parentNode.append(this.resetBtn);
-    // this.parentNode.append(this.laps);
     //==Add listeners
     this.startBtn.addEventListener('click', this.startTimer.bind(this));
     this.resetBtn.addEventListener('click', this.resetTimer.bind(this));
