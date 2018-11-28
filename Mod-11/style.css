@@ -1,0 +1,32 @@
+body {
+  font-family: "Roboto", sans-serif;
+  background: #fff;
+}
+
+.container {
+  width: 70%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.card {
+  width: 30%;
+  border: 2px solid lightblue;
+  padding: 10px;
+}
+
+.card title {
+  display: block;
+  margin-bottom: 8px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.card img {
+  display: block;
+  margin: auto;
+}
