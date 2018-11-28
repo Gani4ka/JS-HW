@@ -132,14 +132,6 @@ class UserInfo {
     fetch('https://test-users-api.herokuapp.com/users')
       .then(response => { if (response.ok) return response.json() })
       .then(data => {
-        // if (this.tableIsShown === true) {
-        //   console.log(this.table);
-        //   this.resultTable.remove(this.table);                    
-        //   this.tableIsShown = false;
-        //   console.log(this.tableIsShown);
-        // }
-        // if (this.tableIsShown === false) {
-        //   console.log('zz');
           let tableHeadRow = document.createElement('tr');
           let tableHeadId = document.createElement('th');
           let tableHeadName = document.createElement('th');
@@ -148,7 +140,7 @@ class UserInfo {
           tableHeadName.textContent = 'NAME';
           tableHeadAge.textContent = 'AGE';
           tableHeadRow.append(tableHeadId, tableHeadName, tableHeadAge);
-          this.table.append(tableHeadRow);
+          this.table.innerHTML = '';
 
           data.data.forEach(user => {
             let row = document.createElement('tr');
@@ -156,7 +148,6 @@ class UserInfo {
             this.table.append(row);
           })
           this.resultTable.append(this.table);
-          // this.tableIsShown = true;
         }
       )
       .catch(reject => this.result.textContent = 'some error')
