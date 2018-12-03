@@ -114,25 +114,30 @@ const laptops = [
   class FormValidate {
     constructor (form, allData) {
       this.form = form;
-      this.filterBtn = null;
+      // this.filterBtn = null;
       this.filterData = {},
       this.inputs = null,
       this.allData = allData,
-      this.container = null;
+      this.container = null,
+      this.source = null,
+      this.template = null;
     }
 
 //Add listeners
   addListeners() {
-    this.filterBtn = document.querySelector('button[type=submit]');
+    window.addEventListener('load', this.makeCards(laptops));
+    // this.filterBtn = document.querySelector('button[type=submit]');
+    this.resetBtn = document.querySelector('button[type=reset]');
     this.form.addEventListener('submit', this.showCards.bind(this));
+    this.form.addEventListener('reset', this.resetFilter.bind(this));
   }
 
-   //Main function
+   //Main function - HANDLER
   showCards() {
     event.preventDefault();
     this.collectCheckedValues();
     let  filteredLaptops = this.compareCheckedValues(this.filterData, this.allData);
-    this.makeCard(filteredLaptops);
+    this.makeFilteredCard(filteredLaptops);
   }
 
   //Collect data from inputs
@@ -180,17 +185,26 @@ compareCheckedValues(filterData, allData) {
   
   return filteredLaptops;
 }
-//Make cards using template
-makeCard(arr) {
+//Make all cards using template
+makeCards(arr) {
   this.container = document.querySelector('.js-container');
+  this.source = document.querySelector('#laptop-card').innerHTML.trim();
+  this.template = Handlebars.compile(this.source);
+  const markup = this.template(arr);
+  this.container.innerHTML = markup;
+}
+//Make filtered cards using template
+makeFilteredCard(arr) {
   if (arr.length === 0) {
     this.container.innerHTML = '<p>No such laptops</p>';
   } else {
-  const source = document.querySelector('#laptop-card').innerHTML.trim();
-  const template = Handlebars.compile(source);
-  const markup = template(arr);
+  const markup = this.template(arr);
   this.container.innerHTML = markup;
   }
+}
+//Reser filter, show all cards - HANDLER
+resetFilter() {
+this.makeCards(laptops)
 }
 }
 
