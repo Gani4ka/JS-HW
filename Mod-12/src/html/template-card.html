@@ -1,0 +1,11 @@
+<template id='url-card'>
+    {{#each this}}
+        <div class="card" data-id="{{id}}">
+            <div class="img-wrap" style="background-image: url({{this.image}})">
+            </div>
+            <h2>{{title}}</h2>
+            <p>{{description}}</p>
+            <button class="del-btn"></button>
+        </div>
+   {{/each}}
+    </template>
