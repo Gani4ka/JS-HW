@@ -90,7 +90,7 @@ class UrlSaver {
     if (this.isUrlNotUnic || !this.isUrlValid) {
       return
     } else {
-      fetch(`http://api.linkpreview.net/?key=5bffa9274630feb332a1007b6c1d6737cad5b6a59a1e5&q=${this.inputValue}`)
+      fetch(`https://api.linkpreview.net/?key=5bffa9274630feb332a1007b6c1d6737cad5b6a59a1e5&q=${this.inputValue}`)
         .then(response => {
           if (response.ok) return response.json();
           throw new Error(`Error while fetching: ${response.statusText}`) // А это надо вообще, если есть catch?

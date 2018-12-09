@@ -101,7 +101,7 @@ function () {
       if (this.isUrlNotUnic || !this.isUrlValid) {
         return;
       } else {
-        fetch("http://api.linkpreview.net/?key=5bffa9274630feb332a1007b6c1d6737cad5b6a59a1e5&q=".concat(this.inputValue)).then(function (response) {
+        fetch("https://api.linkpreview.net/?key=5bffa9274630feb332a1007b6c1d6737cad5b6a59a1e5&q=".concat(this.inputValue)).then(function (response) {
           if (response.ok) return response.json();
           throw new Error("Error while fetching: ".concat(response.statusText)); // А это надо вообще, если есть catch?
         }).then(function (data) {
