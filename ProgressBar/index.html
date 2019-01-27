@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"
+    />
+    <link rel="stylesheet" href="loading-bar/loading-bar.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+
+  <body>
+    <button id="close-btn">close</button>
+    <div class="progress-bar-first">
+      <h3 class="progress-bar-first__title">Количество сожженных калорий</h3>
+      <div class="progress-bar-first__bar-wrapper">
+        <div class="line-bar">
+          <p class="line-bar__label">cегодня</p>
+          <div class="line-bar__bars-wrapper">
+            <div class="line-bar__bar line-bar__bar--under">
+              <div
+                id="bar-today"
+                class="line-bar__bar line-bar__bar--today"
+              ></div>
+            </div>
+            <p id="bar-text-today" class="line-bar__num">0ккал</p>
+          </div>
+        </div>
+        <div class="line-bar">
+          <p class="line-bar__label">неделя</p>
+          <div class="line-bar__bars-wrapper">
+            <div class="line-bar__bar line-bar__bar--under">
+              <div
+                id="bar-week"
+                class="line-bar__bar line-bar__bar--week"
+              ></div>
+            </div>
+          </div>
+          <p id="bar-text-week" class="line-bar__num">0ккал</p>
+        </div>
+        <div class="line-bar">
+          <p class="line-bar__label">месяц</p>
+          <div class="line-bar__bars-wrapper">
+            <div class="line-bar__bar line-bar__bar--under">
+              <div
+                id="bar-mounth"
+                class="line-bar__bar line-bar__bar--mounth"
+              ></div>
+            </div>
+          </div>
+          <p id="bar-text-mounth" class="line-bar__num">0ккал</p>
+        </div>
+      </div>
+    </div>
+
+    <script src="loading-bar/loading-bar.js"></script>
+    <script src="js.js"></script>
+  </body>
+</html>
